@@ -4,23 +4,175 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Century Bank - Core Connected Marketing</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --font-primary: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --color-green: #d2f058;
+      --color-graphite: #3b3b3c;
+      --color-powder: #b7e4f7;
+      --color-powder-dark: #1a7a9a;
+      --color-desert: #fdab7d;
+      --color-ash: #d3d1c5;
+      --color-ash-light: #eeeeea;
+      --color-dark-blue: #1a3a5c;
+      --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-lifted: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow-floating: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --radius-lg: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--font-primary);
+    }
+
     html, body, #root { height: 100%; }
+
+    /* Typography Scale */
+    h1, .hero-headline {
+      font-weight: 400;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-weight: 700;
+      font-size: 1.125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    p, li {
+      font-weight: 400;
+      font-size: 1.125rem;
+      line-height: 1.7;
+    }
+
+    button, .btn {
+      font-weight: 600;
+    }
+
+    /* Animations */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes arrowUp {
+      from { transform: translate(0, 0); }
+      to { transform: translate(2px, -2px); }
+    }
+
     .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    .animate-scale-in { animation: scaleIn 0.4s ease-out forwards; }
+
+    /* Button Hover Effects */
+    .btn-hover {
+      transition: all 0.3s ease;
+    }
+    .btn-hover:hover:not(:disabled) {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+    .btn-hover:focus {
+      outline: 2px solid #d2f058;
+      outline-offset: 2px;
+    }
+    .btn-hover .arrow-icon {
+      transition: transform 0.3s ease;
+    }
+    .btn-hover:hover:not(:disabled) .arrow-icon {
+      transform: translate(2px, -2px);
+    }
+
+    /* Plus Bullet Lists */
+    .plus-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .plus-bullet {
+      color: var(--color-green);
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    /* Focus States - WCAG Compliance */
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--color-green);
+      outline-offset: 2px;
+    }
+
+    /* Card Styles */
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: var(--radius-lg);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-floating);
+    }
+
+    /* Button Styles */
+    .btn-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lifted);
+    }
+
+    /* Arrow Hover */
+    .arrow-up {
+      transition: transform 0.3s ease;
+    }
+
+    .arrow-up:hover {
+      transform: translate(2px, -2px);
+    }
+
+    /* Geometric Overlay */
+    .geometric-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.25;
+      pointer-events: none;
+      overflow: hidden;
+    }
   </style>
 </head>
 <body>
@@ -79,16 +231,22 @@
         <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
       </svg>
     );
+    const ArrowUp = ({ size = 24, color = 'currentColor', className = '' }) => (
+      <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    );
 
-    // Colors
+    // Colors - Epicosity Brand Palette
     const colors = {
-      green: '#d2f058',
-      graphite: '#3b3b3c',
-      powder: '#b7e4f7',
-      desert: '#f9aa7d',
-      ash: '#d3d1c5',
-      ashLight: '#eeeeea',
-      darkBlue: '#1a3a5c',
+      green: '#d2f058',        // Primary accent - use for backgrounds, CTAs, focus rings
+      graphite: '#3b3b3c',     // Primary workhorse - use for text and icons on light backgrounds
+      powder: '#b7e4f7',       // Light blue accent
+      powderDark: '#1a7a9a',   // WCAG AA compliant blue for interactive text/links (5.3:1 contrast)
+      desert: '#fdab7d',       // Orange accent
+      ash: '#d3d1c5',          // Light gray
+      ashLight: '#eeeeea',     // Very light gray background
+      darkBlue: '#1a3a5c',     // Corporate blue for dark sections
     };
 
     // Default presenter notes
@@ -130,26 +288,43 @@
       34: "Thank them. Open for questions.",
     };
 
-    // Logo Component
+    // Logo Component - Epicosity Brand Typography
     const Logo = ({ variant = 'dark' }) => {
       const gradientId = `logo-gradient-${variant}-${Math.random().toString(36).substr(2, 9)}`;
       return (
-        <svg width="140" height="32" viewBox="0 0 140 32" className="transition-transform duration-300 hover:scale-105">
+        <svg width="140" height="32" viewBox="0 0 140 32" className="transition-transform duration-300">
           <defs>
             <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#a4b545" />
               <stop offset="100%" stopColor="#7ab8b8" />
             </linearGradient>
           </defs>
-          <text x="0" y="24" fill={variant === 'dark' ? `url(#${gradientId})` : colors.graphite} style={{fontSize: 28, fontWeight: 900, fontFamily: 'Arial Black, Arial, sans-serif', letterSpacing: '-0.02em'}}>epicosity</text>
+          <text x="0" y="24" fill={variant === 'dark' ? `url(#${gradientId})` : colors.graphite} style={{fontSize: 28, fontWeight: 400, fontFamily: 'DM Sans, sans-serif', letterSpacing: 0}}>epicosity</text>
         </svg>
       );
     };
 
+    // Geometric Overlay Component - Triangle motifs (symbol of growth)
+    const GeometricOverlay = () => (
+      <div className="geometric-overlay">
+        <svg width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+          <polygon points="1920,0 1920,400 1520,0" fill={colors.green} opacity="0.25" />
+          <polygon points="1920,50 1920,300 1720,50" fill={colors.powder} opacity="0.20" />
+          <polygon points="0,1080 500,1080 0,680" fill={colors.desert} opacity="0.30" />
+          <polygon points="50,1080 350,1080 50,880" fill={colors.powder} opacity="0.25" />
+          <polygon points="1800,500 1900,650 1700,650" fill={colors.green} opacity="0.20" />
+          <polygon points="200,400 300,550 100,550" fill={colors.desert} opacity="0.20" />
+          <polygon points="150,0 250,150 50,150" fill={colors.powder} opacity="0.15" />
+          <polygon points="1920,1080 1920,900 1720,1080" fill={colors.green} opacity="0.28" />
+        </svg>
+      </div>
+    );
+
     // Slide Components
     const TitleSlide = ({ children, bg = `linear-gradient(135deg, ${colors.graphite} 0%, #2a2a2b 100%)`, isActive }) => (
-      <div className={`h-full flex flex-col items-center justify-center text-center p-8 md:p-12 transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`} style={{background: bg}}>
-        <div className="animate-fade-in-up">{children}</div>
+      <div className={`h-full flex flex-col items-center justify-center text-center p-8 md:p-12 transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`} style={{background: bg, position: 'relative'}}>
+        <GeometricOverlay />
+        <div className="animate-fade-in-up" style={{position: 'relative', zIndex: 1}}>{children}</div>
       </div>
     );
 
@@ -184,11 +359,11 @@
 
       const getContent = (key, defaultVal) => editedContent[key] !== undefined ? editedContent[key] : defaultVal;
 
-      // Navigation
+      // Navigation - Smooth transitions with upward growth motion
       const goToSlide = useCallback((newSlide) => {
         if (newSlide < 0 || newSlide >= 35 || isTransitioning) return;
         setIsTransitioning(true);
-        setTimeout(() => { setSlide(newSlide); setIsTransitioning(false); }, 150);
+        setTimeout(() => { setSlide(newSlide); setIsTransitioning(false); }, 350);
       }, [isTransitioning]);
 
       const nextSlide = useCallback(() => goToSlide(slide + 1), [slide, goToSlide]);
@@ -237,15 +412,15 @@
         if (editMode && localEdit) {
           return multiline ? (
             <div className="flex gap-2 items-start">
-              <textarea value={tempVal} onChange={e => setTempVal(e.target.value)} className="flex-1 p-2 rounded border-2 border-blue-500" style={{...style, minHeight: 80}} autoFocus />
-              <button onClick={() => { setEditedContent({...editedContent, [id]: tempVal}); setLocalEdit(false); }} className="p-1 bg-green-500 rounded hover:bg-green-600"><Check size={16} color="white"/></button>
-              <button onClick={() => setLocalEdit(false)} className="p-1 bg-red-500 rounded hover:bg-red-600"><X size={16} color="white"/></button>
+              <textarea value={tempVal} onChange={e => setTempVal(e.target.value)} className="flex-1 p-2 rounded" style={{...style, minHeight: 80, border: `2px solid ${colors.green}`, outline: 'none'}} autoFocus />
+              <button onClick={() => { setEditedContent({...editedContent, [id]: tempVal}); setLocalEdit(false); }} className="p-1 rounded transition-colors" style={{backgroundColor: colors.green}} onMouseEnter={e => e.currentTarget.style.opacity = '0.8'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}><Check size={16} color={colors.graphite}/></button>
+              <button onClick={() => setLocalEdit(false)} className="p-1 rounded transition-colors" style={{backgroundColor: colors.graphite}} onMouseEnter={e => e.currentTarget.style.opacity = '0.8'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}><X size={16} color="white"/></button>
             </div>
           ) : (
             <div className="flex gap-2 items-center">
-              <input value={tempVal} onChange={e => setTempVal(e.target.value)} className="flex-1 p-2 rounded border-2 border-blue-500" style={style} autoFocus />
-              <button onClick={() => { setEditedContent({...editedContent, [id]: tempVal}); setLocalEdit(false); }} className="p-1 bg-green-500 rounded hover:bg-green-600"><Check size={16} color="white"/></button>
-              <button onClick={() => setLocalEdit(false)} className="p-1 bg-red-500 rounded hover:bg-red-600"><X size={16} color="white"/></button>
+              <input value={tempVal} onChange={e => setTempVal(e.target.value)} className="flex-1 p-2 rounded" style={{...style, border: `2px solid ${colors.green}`, outline: 'none'}} autoFocus />
+              <button onClick={() => { setEditedContent({...editedContent, [id]: tempVal}); setLocalEdit(false); }} className="p-1 rounded transition-colors" style={{backgroundColor: colors.green}} onMouseEnter={e => e.currentTarget.style.opacity = '0.8'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}><Check size={16} color={colors.graphite}/></button>
+              <button onClick={() => setLocalEdit(false)} className="p-1 rounded transition-colors" style={{backgroundColor: colors.graphite}} onMouseEnter={e => e.currentTarget.style.opacity = '0.8'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}><X size={16} color="white"/></button>
             </div>
           );
         }
@@ -254,16 +429,16 @@
         );
       };
 
-      // Progress bar
+      // Progress bar with subtle glow
       const ProgressBar = () => (
         <div className="absolute top-0 left-0 right-0 h-1 bg-gray-800 z-50">
-          <div className="h-full transition-all duration-300 ease-out" style={{width: `${((slide + 1) / 35) * 100}%`, background: `linear-gradient(90deg, ${colors.green}, ${colors.powder})`}} />
+          <div className="h-full transition-all duration-300 ease-out" style={{width: `${((slide + 1) / 35) * 100}%`, background: `linear-gradient(90deg, ${colors.green}, ${colors.powder})`, boxShadow: '0 0 8px rgba(210, 240, 88, 0.4)'}} />
         </div>
       );
 
       // Notes panel
       const NotesPanel = () => (
-        <div className={`absolute right-0 top-0 bottom-0 w-80 bg-gray-900 border-l border-gray-700 p-4 transition-transform duration-300 z-40 ${showNotes ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className={`absolute right-0 top-0 bottom-0 w-80 bg-gray-900 border-l border-gray-700 p-4 transition-transform duration-300 ease-out z-40 ${showNotes ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-bold flex items-center gap-2"><FileText size={18} />Presenter Notes</h3>
             <button onClick={() => setShowNotes(false)} className="text-gray-400 hover:text-white"><X size={18} /></button>
@@ -298,10 +473,10 @@
         </TitleSlide>,
         <ContentSlide key={3} title="Now you're growing." isActive={slide === 3}>
           <div>
-            <ul className="space-y-4 text-lg md:text-xl" style={{color: colors.graphite}}>
-              <li className="flex items-start gap-2"><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span><span>Six branches across New Mexico.</span></li>
-              <li className="flex items-start gap-2"><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span><span>Loan production offices in Dallas & Houston.</span></li>
-              <li className="flex items-start gap-2"><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span><span>Los Alamos — new building at Trinity Drive.</span></li>
+            <ul className="space-y-4 text-lg md:text-xl" style={{color: colors.graphite, listStyle: 'none'}}>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>Six branches across New Mexico.</span></li>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>Loan production offices in Dallas & Houston.</span></li>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>Los Alamos — new building at Trinity Drive.</span></li>
             </ul>
             <p className="mt-8 text-lg md:text-xl" style={{color: colors.graphite}}>New markets. New customers. New expectations.</p>
             <p className="text-lg md:text-xl font-bold mt-3" style={{color: colors.desert}}>This is the moment.</p>
@@ -319,22 +494,22 @@
         </ContentSlide>,
         <ContentSlide key={6} title="Where your customer data lives matters." isActive={slide === 6}>
           <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-            <div className="flex-1 rounded-lg p-4 md:p-6 transition-transform hover:scale-[1.02]" style={{backgroundColor: 'white', border: `3px solid ${colors.desert}`}}>
+            <div className="flex-1 card-hover p-4 md:p-6" style={{backgroundColor: 'white', border: `3px solid ${colors.desert}`, borderRadius: '12px'}}>
               <h3 className="font-bold text-lg md:text-xl mb-4" style={{color: colors.desert}}>Old Model:</h3>
               <ul className="space-y-2 md:space-y-3 text-base md:text-lg" style={{color: colors.graphite}}>
-                <li>▪ Vendor stores your customer database</li>
-                <li>▪ SSNs, account numbers in external system</li>
-                <li>▪ One breach = 80+ institutions exposed</li>
-                <li>▪ 3+ months before notification</li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.graphite}}>+</span><span>Vendor stores your customer database</span></li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.graphite}}>+</span><span>SSNs, account numbers in external system</span></li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.graphite}}>+</span><span>One breach = 80+ institutions exposed</span></li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.graphite}}>+</span><span>3+ months before notification</span></li>
               </ul>
             </div>
-            <div className="flex-1 rounded-lg p-4 md:p-6 transition-transform hover:scale-[1.02]" style={{backgroundColor: colors.darkBlue}}>
+            <div className="flex-1 card-hover p-4 md:p-6" style={{backgroundColor: colors.darkBlue, borderRadius: '12px'}}>
               <h3 className="font-bold text-lg md:text-xl mb-4" style={{color: colors.green}}>Core Connected Model:</h3>
               <ul className="space-y-2 md:space-y-3 text-base md:text-lg" style={{color: colors.powder}}>
-                <li><span style={{color: colors.green}}>✓</span> Your core remains source of truth</li>
-                <li><span style={{color: colors.green}}>✓</span> Only marketing-relevant data moves</li>
-                <li><span style={{color: colors.green}}>✓</span> One-way, read-only sync</li>
-                <li><span style={{color: colors.green}}>✓</span> Your data never leaves your control</li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.green}}>+</span><span>Your core remains source of truth</span></li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.green}}>+</span><span>Only marketing-relevant data moves</span></li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.green}}>+</span><span>One-way, read-only sync</span></li>
+                <li className="plus-list-item"><span className="plus-bullet" style={{color: colors.green}}>+</span><span>Your data never leaves your control</span></li>
               </ul>
             </div>
           </div>
@@ -380,11 +555,11 @@
               <span style={{color: colors.desert}}>→</span>
               <span className="px-2 md:px-3 py-2 rounded" style={{backgroundColor: colors.green, color: colors.graphite}}>HubSpot</span>
             </div>
-            <ul className="space-y-2 md:space-y-3 text-base md:text-lg" style={{color: colors.graphite}}>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> Customer and account data syncs on schedule</li>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> Only marketing-relevant fields, not sensitive PII</li>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> Core changes trigger HubSpot updates automatically</li>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> HubSpot data stays in HubSpot — doesn't write back</li>
+            <ul className="space-y-2 md:space-y-3 text-base md:text-lg" style={{color: colors.graphite, listStyle: 'none'}}>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>Customer and account data syncs on schedule</span></li>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>Only marketing-relevant fields, not sensitive PII</span></li>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>Core changes trigger HubSpot updates automatically</span></li>
+              <li className="plus-list-item"><span className="plus-bullet">+</span><span>HubSpot data stays in HubSpot — doesn't write back</span></li>
             </ul>
             <p className="text-lg md:text-xl font-bold mt-6" style={{color: colors.darkBlue}}>One-way sync. Secure handoff. Clear boundaries.</p>
           </div>
@@ -424,18 +599,18 @@
           <div>
             <p className="text-base md:text-lg font-bold mb-4" style={{color: colors.darkBlue}}>Campaigns that run themselves — triggered by real behavior.</p>
             <div className="space-y-3 text-base md:text-lg" style={{color: colors.graphite}}>
-              <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ Welcome Journey - Los Alamos</span><br/><span className="text-sm md:text-base">New account → onboarding → LANL triggers → cross-sell at 90 days</span></div>
-              <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ Cross-Sell - Existing</span><br/><span className="text-sm md:text-base">Checking only → detect external mortgage → home equity education</span></div>
-              <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ Loan Renewal - Texas</span><br/><span className="text-sm md:text-base">Loan maturing → refinance offer → Dallas LPO gets warm lead</span></div>
+              <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>Welcome Journey - Los Alamos</span><br/><span className="text-sm md:text-base">New account → onboarding → LANL triggers → cross-sell at 90 days</span></div></div>
+              <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>Cross-Sell - Existing</span><br/><span className="text-sm md:text-base">Checking only → detect external mortgage → home equity education</span></div></div>
+              <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>Loan Renewal - Texas</span><br/><span className="text-sm md:text-base">Loan maturing → refinance offer → Dallas LPO gets warm lead</span></div></div>
             </div>
           </div>
         </ContentSlide>,
         <ContentSlide key={17} title="What becomes possible — Prospects." isActive={slide === 17}>
           <div className="space-y-3 text-base md:text-lg" style={{color: colors.graphite}}>
-            <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ Los Alamos Market Entry</span><br/><span className="text-sm md:text-base">Search "best bank near me" → see Century → retarget with Trinity Drive campaign</span></div>
-            <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ LANL Employee Targeting</span><br/><span className="text-sm md:text-base">Federal employees within 15 miles → financial wellness content</span></div>
-            <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ Competitor Conquest</span><br/><span className="text-sm md:text-base">Geofence competitor branches → serve ads highlighting 137 years of trust</span></div>
-            <div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>▪ Texas Expansion Pipeline</span><br/><span className="text-sm md:text-base">Houston/Dallas campaigns → lead capture → nurture → handoff to LPO</span></div>
+            <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>Los Alamos Market Entry</span><br/><span className="text-sm md:text-base">Search "best bank near me" → see Century → retarget with Trinity Drive campaign</span></div></div>
+            <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>LANL Employee Targeting</span><br/><span className="text-sm md:text-base">Federal employees within 15 miles → financial wellness content</span></div></div>
+            <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>Competitor Conquest</span><br/><span className="text-sm md:text-base">Geofence competitor branches → serve ads highlighting 137 years of trust</span></div></div>
+            <div className="plus-list-item"><span className="plus-bullet">+</span><div className="p-3 rounded-lg hover:bg-white/50"><span className="font-bold" style={{color: colors.darkBlue}}>Texas Expansion Pipeline</span><br/><span className="text-sm md:text-base">Houston/Dallas campaigns → lead capture → nurture → handoff to LPO</span></div></div>
           </div>
         </ContentSlide>,
         <ContentSlide key={18} title="Success story: Industrial FCU" isActive={slide === 18}>
@@ -451,14 +626,14 @@
         <ContentSlide key={20} title="Every click. Every conversion. Every dollar." isActive={slide === 20}>
           <div>
             <ul className="space-y-2 text-lg md:text-xl mb-4" style={{color: colors.graphite}}>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> Ad clicks → Page visits → Forms → Account opened</li>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> Deal attribution report</li>
-              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>▪</span> Campaign influence on closed revenue</li>
+              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>+</span> Ad clicks → Page visits → Forms → Account opened</li>
+              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>+</span> Deal attribution report</li>
+              <li><span style={{color: colors.darkBlue, fontWeight: 'bold'}}>+</span> Campaign influence on closed revenue</li>
             </ul>
             <p className="text-lg md:text-xl mb-4" style={{color: colors.graphite}}>Answer: <span className="font-bold" style={{color: colors.darkBlue}}>'What did our marketing actually produce?'</span></p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <div className="rounded-lg p-4 flex-1 transition-transform hover:scale-105" style={{backgroundColor: colors.desert}}><div className="font-bold text-2xl md:text-3xl text-white">$50,484.32</div><div className="text-base text-white">Associated Deal Value</div></div>
-              <div className="rounded-lg p-4 flex-1 transition-transform hover:scale-105" style={{backgroundColor: colors.darkBlue}}><div className="font-bold text-2xl md:text-3xl" style={{color: colors.powder}}>5</div><div className="text-base" style={{color: colors.powder}}>Avg Interactions Per Deal</div></div>
+              <div className="card-hover p-4 flex-1" style={{backgroundColor: colors.desert}}><div className="font-bold text-2xl md:text-3xl text-white">$50,484.32</div><div className="text-base text-white">Associated Deal Value</div></div>
+              <div className="card-hover p-4 flex-1" style={{backgroundColor: colors.darkBlue}}><div className="font-bold text-2xl md:text-3xl" style={{color: colors.powder}}>5</div><div className="text-base" style={{color: colors.powder}}>Avg Interactions Per Deal</div></div>
             </div>
           </div>
         </ContentSlide>,
@@ -485,9 +660,14 @@
         <ContentSlide key={24} title="What this means for Century Bank." isActive={slide === 24}>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             {['Marketing becomes a revenue engine.','No more manual list pulls.','Secure. Compliant. Integrated.','Audit-ready architecture.','Tools to execute with proof.'].map((t,i)=>(
-              <div key={i} className="rounded-lg p-3 md:p-4 transition-all hover:scale-105" style={{backgroundColor: colors.darkBlue}}>
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full mb-2" style={{backgroundColor: colors.green}}/>
-                <p style={{color: colors.powder}} className="text-sm md:text-base leading-tight">{t}</p>
+              <div key={i} className="p-3 md:p-4 transition-all hover:scale-105 hover:shadow-lg" style={{backgroundColor: colors.darkBlue, borderRadius: '12px'}}>
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full mb-3 flex items-center justify-center" style={{backgroundColor: colors.green}}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={colors.darkBlue} strokeWidth="3" strokeLinecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </div>
+                <p style={{color: colors.powder}} className="text-sm md:text-base leading-tight font-medium">{t}</p>
               </div>
             ))}
           </div>
@@ -532,53 +712,53 @@
           <div className="mb-4"><Logo variant="dark" /></div>
           <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{color: colors.green}}>Investment Overview</h2>
           <div className="flex-1 flex flex-col justify-center max-w-4xl mx-auto w-full">
-            <div className="rounded-lg p-3 mb-3" style={{backgroundColor: 'rgba(255,255,255,0.1)'}}>
+            <div className="p-3 mb-3" style={{backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '12px'}}>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <span style={{color: colors.powder}} className="text-base">Number of Core Platforms</span>
+                <span style={{color: colors.powder}} className="text-base font-semibold">Number of Core Platforms</span>
                 <div className="flex gap-2">
-                  <button onClick={()=>setPlatforms(1)} className="px-3 py-2 rounded text-sm font-semibold transition-all hover:scale-105" style={{backgroundColor:platforms===1?colors.green:'rgba(255,255,255,0.2)',color:platforms===1?colors.graphite:colors.powder}}>1 Platform</button>
-                  <button onClick={()=>setPlatforms(2)} className="px-3 py-2 rounded text-sm font-semibold transition-all hover:scale-105" style={{backgroundColor:platforms===2?colors.green:'rgba(255,255,255,0.2)',color:platforms===2?colors.graphite:colors.powder}}>2 Platforms</button>
+                  <button onClick={()=>setPlatforms(1)} className="px-3 py-2 text-sm font-semibold transition-all btn-hover" style={{backgroundColor:platforms===1?colors.green:'rgba(255,255,255,0.2)',color:platforms===1?colors.graphite:colors.powder,border:platforms===1?`2px solid ${colors.green}`:'2px solid transparent',borderRadius:'8px'}}>1 Platform</button>
+                  <button onClick={()=>setPlatforms(2)} className="px-3 py-2 text-sm font-semibold transition-all btn-hover" style={{backgroundColor:platforms===2?colors.green:'rgba(255,255,255,0.2)',color:platforms===2?colors.graphite:colors.powder,border:platforms===2?`2px solid ${colors.green}`:'2px solid transparent',borderRadius:'8px'}}>2 Platforms</button>
                 </div>
               </div>
             </div>
-            <div className="rounded-lg p-3 mb-3" style={{backgroundColor: 'rgba(255,255,255,0.1)'}}>
+            <div className="p-3 mb-3" style={{backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '12px'}}>
               <div className="flex flex-wrap items-center justify-center gap-2 mb-2">
                 <div className="rounded px-3 py-2 text-center" style={{backgroundColor:colors.powder}}><div className="font-bold text-sm" style={{color: colors.darkBlue}}>Your Core</div></div>
-                <span style={{color:colors.desert}}>→</span>
+                <span style={{color:colors.desert, fontWeight: '700'}}>→</span>
                 <div className="rounded px-3 py-2 text-center" style={{backgroundColor:colors.desert}}><div className="font-bold text-sm text-white">Prismatic</div></div>
-                <span style={{color:colors.desert}}>→</span>
+                <span style={{color:colors.desert, fontWeight: '700'}}>→</span>
                 <div className="rounded px-3 py-2 text-center" style={{backgroundColor:colors.green}}><div className="font-bold text-sm" style={{color: colors.graphite}}>HubSpot</div></div>
               </div>
               <p className="text-center text-sm" style={{color:colors.powder}}>One-way sync • Read-only • No SSNs transferred</p>
             </div>
-            <div className="rounded-lg overflow-hidden mb-3" style={{backgroundColor:'rgba(255,255,255,0.1)'}}>
-              <div className="px-3 py-2"><span className="font-bold text-lg" style={{color: colors.desert}}>One-Time: ${integrationCost.toLocaleString()}</span></div>
+            <div className="overflow-hidden mb-3" style={{backgroundColor:'rgba(255,255,255,0.1)', borderRadius: '12px'}}>
+              <div className="px-3 py-2"><span className="text-lg" style={{color: colors.desert, fontWeight: '700'}}>One-Time: ${integrationCost.toLocaleString()}</span></div>
             </div>
-            <div className="rounded-lg overflow-hidden mb-3" style={{backgroundColor:'rgba(255,255,255,0.1)'}}>
+            <div className="overflow-hidden mb-3" style={{backgroundColor:'rgba(255,255,255,0.1)', borderRadius: '12px'}}>
               <div className="px-3 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b" style={{borderColor: 'rgba(255,255,255,0.2)'}}>
-                <span className="font-bold text-base" style={{color: colors.powder}}>Ongoing Investment</span>
+                <span className="text-base" style={{color: colors.powder, fontWeight: '700'}}>Ongoing Investment</span>
                 <div className="flex gap-2">
-                  <button onClick={()=>setShowAnnual(false)} className="px-2 py-1 rounded text-xs font-semibold" style={{backgroundColor:!showAnnual?colors.green:'rgba(255,255,255,0.2)',color:!showAnnual?colors.graphite:colors.powder}}>Monthly</button>
-                  <button onClick={()=>setShowAnnual(true)} className="px-2 py-1 rounded text-xs font-semibold" style={{backgroundColor:showAnnual?colors.green:'rgba(255,255,255,0.2)',color:showAnnual?colors.graphite:colors.powder}}>Annual</button>
+                  <button onClick={()=>setShowAnnual(false)} className="px-2 py-1 text-xs font-semibold transition-all btn-hover" style={{backgroundColor:!showAnnual?colors.green:'rgba(255,255,255,0.2)',color:!showAnnual?colors.graphite:colors.powder,border:!showAnnual?`2px solid ${colors.green}`:'2px solid transparent',borderRadius:'6px'}}>Monthly</button>
+                  <button onClick={()=>setShowAnnual(true)} className="px-2 py-1 text-xs font-semibold transition-all btn-hover" style={{backgroundColor:showAnnual?colors.green:'rgba(255,255,255,0.2)',color:showAnnual?colors.graphite:colors.powder,border:showAnnual?`2px solid ${colors.green}`:'2px solid transparent',borderRadius:'6px'}}>Annual</button>
                 </div>
               </div>
               <div className="p-3 space-y-2 text-base">
                 {[{n:'HubSpot Marketing Hub Enterprise',c:colors.green,a:hubspotAnnual},{n:'Prismatic Integration Platform',c:colors.desert,a:prismaticAnnual},{n:'Epicosity Ongoing Support',c:colors.powder,a:supportAnnual}].map((item,i)=>(
                   <div key={i} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
                     <span style={{color: colors.powder}} className="text-sm">{item.n}</span>
-                    <span className="font-bold" style={{color:item.c}}>${showAnnual?item.a.toLocaleString():Math.round(item.a/12).toLocaleString()}/{showAnnual?'yr':'mo'}</span>
+                    <span style={{color:item.c, fontWeight: '700'}}>${showAnnual?item.a.toLocaleString():Math.round(item.a/12).toLocaleString()}/{showAnnual?'yr':'mo'}</span>
                   </div>
                 ))}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 pt-2 border-t" style={{borderColor:'rgba(255,255,255,0.2)'}}>
-                  <span className="font-bold" style={{color: colors.powder}}>Total Ongoing</span>
-                  <span className="font-bold" style={{color: colors.powder}}>${showAnnual?totalOngoing.toLocaleString():Math.round(totalOngoing/12).toLocaleString()}/{showAnnual?'yr':'mo'}</span>
+                  <span style={{color: colors.powder, fontWeight: '700'}}>Total Ongoing</span>
+                  <span style={{color: colors.powder, fontWeight: '700'}}>${showAnnual?totalOngoing.toLocaleString():Math.round(totalOngoing/12).toLocaleString()}/{showAnnual?'yr':'mo'}</span>
                 </div>
               </div>
             </div>
-            <div className="rounded-lg p-4" style={{backgroundColor:colors.green}}>
+            <div className="p-4" style={{backgroundColor:colors.green, borderRadius: '12px'}}>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                <div className="text-base font-semibold" style={{color:colors.graphite}}>YEAR 1 TOTAL</div>
-                <div className="text-3xl font-bold" style={{color:colors.graphite}}>${totalYear1.toLocaleString()}</div>
+                <div className="text-base" style={{color:colors.graphite, fontWeight: '700'}}>YEAR 1 TOTAL</div>
+                <div className="text-3xl" style={{color:colors.graphite, fontWeight: '700'}}>${totalYear1.toLocaleString()}</div>
               </div>
             </div>
           </div>
@@ -615,14 +795,14 @@
           <NotesPanel />
           <div className={`flex-1 overflow-hidden transition-all duration-300 ${showNotes ? 'mr-80' : ''} ${isTransitioning ? 'opacity-50' : ''}`}>{slides[slide]}</div>
           <div className="p-2 md:p-3 flex items-center justify-between" style={{backgroundColor: '#2a2a2b'}}>
-            <button onClick={prevSlide} disabled={slide===0} className="p-2 rounded disabled:opacity-30 transition-all hover:bg-gray-600" style={{backgroundColor:'#4a4a4b'}}><ChevronLeft size={20} color="white"/></button>
-            <div className="hidden md:flex items-center gap-1 max-w-lg overflow-x-auto">{slides.map((_,i)=>(<button key={i} onClick={()=>goToSlide(i)} className="rounded-full transition-all hover:scale-125" style={{width:i===slide?12:6,height:6,backgroundColor:i===slide?colors.green:'#5a5a5b',minWidth:i===slide?12:6}}/>))}</div>
+            <button onClick={prevSlide} disabled={slide===0} className="btn-hover p-2 rounded-lg disabled:opacity-30" style={{backgroundColor:'#4a4a4b'}}><ChevronLeft size={20} color="white"/></button>
+            <div className="hidden md:flex items-center gap-1 max-w-lg overflow-x-auto">{slides.map((_,i)=>(<button key={i} onClick={()=>goToSlide(i)} className="btn-hover rounded-full" style={{width:i===slide?12:6,height:6,backgroundColor:i===slide?colors.green:'#5a5a5b',minWidth:i===slide?12:6}}/>))}</div>
             <div className="md:hidden text-sm text-white">{slide + 1} / {slides.length}</div>
             <div className="flex items-center gap-1 md:gap-2">
-              <button onClick={() => setShowNotes(!showNotes)} className="p-2 rounded transition-all hover:bg-gray-600" style={{backgroundColor: showNotes ? colors.powder : '#4a4a4b'}}>{showNotes ? <EyeOff size={16} color={colors.darkBlue}/> : <Eye size={16} color="white"/>}</button>
-              <button onClick={toggleFullscreen} className="p-2 rounded transition-all hover:bg-gray-600" style={{backgroundColor: '#4a4a4b'}}>{isFullscreen ? <Minimize2 size={16} color="white"/> : <Maximize2 size={16} color="white"/>}</button>
-              <button onClick={()=>setEditMode(!editMode)} className="p-2 rounded flex items-center gap-1 transition-all hover:scale-105" style={{backgroundColor: editMode ? colors.green : '#4a4a4b'}}><Edit3 size={16} color={editMode ? colors.graphite : 'white'}/><span className="hidden sm:inline text-xs" style={{color: editMode ? colors.graphite : 'white'}}>{editMode ? 'Done' : 'Edit'}</span></button>
-              <button onClick={nextSlide} disabled={slide===slides.length-1} className="p-2 rounded disabled:opacity-30 transition-all hover:bg-gray-600" style={{backgroundColor:'#4a4a4b'}}><ChevronRight size={20} color="white"/></button>
+              <button onClick={() => setShowNotes(!showNotes)} className="btn-hover p-2 rounded-lg" style={{backgroundColor: showNotes ? colors.powder : '#4a4a4b'}}>{showNotes ? <EyeOff size={16} color={colors.darkBlue}/> : <Eye size={16} color="white"/>}</button>
+              <button onClick={toggleFullscreen} className="btn-hover p-2 rounded-lg" style={{backgroundColor: '#4a4a4b'}}>{isFullscreen ? <Minimize2 size={16} color="white"/> : <Maximize2 size={16} color="white"/>}</button>
+              <button onClick={()=>setEditMode(!editMode)} className="btn-hover p-2 rounded-lg flex items-center gap-1" style={{backgroundColor: editMode ? colors.green : '#4a4a4b'}}><Edit3 size={16} color={editMode ? colors.graphite : 'white'}/><span className="hidden sm:inline text-xs" style={{color: editMode ? colors.graphite : 'white'}}>{editMode ? 'Done' : 'Edit'}</span></button>
+              <button onClick={nextSlide} disabled={slide===slides.length-1} className="btn-hover p-2 rounded-lg disabled:opacity-30 flex items-center gap-1" style={{backgroundColor:'#4a4a4b'}}><span className="hidden sm:inline text-xs text-white">Next</span><ArrowUp size={18} color="white" className="arrow-icon"/></button>
             </div>
           </div>
           <div className="hidden md:block px-4 py-2 text-center text-sm" style={{color:colors.ash}}>{slide+1} / {slides.length} • F = fullscreen • N = notes • Arrow keys to navigate</div>

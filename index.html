@@ -288,19 +288,35 @@
       34: "Thank them. Open for questions.",
     };
 
-    // Logo Component - Epicosity Brand Typography
+    // Logo Component - Epicosity Brand (PNG-based)
     const Logo = ({ variant = 'dark' }) => {
-      const gradientId = `logo-gradient-${variant}-${Math.random().toString(36).substr(2, 9)}`;
+      const logoSrc = variant === 'dark'
+        ? 'brand-assets/logo-files/Epicosity_Logo_White.png'
+        : 'brand-assets/logo-files/Epicosity_Logo_Gradient_1.png';
+
       return (
-        <svg width="140" height="32" viewBox="0 0 140 32" className="transition-transform duration-300">
-          <defs>
-            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#a4b545" />
-              <stop offset="100%" stopColor="#7ab8b8" />
-            </linearGradient>
-          </defs>
-          <text x="0" y="24" fill={variant === 'dark' ? `url(#${gradientId})` : colors.graphite} style={{fontSize: 28, fontWeight: 400, fontFamily: 'DM Sans, sans-serif', letterSpacing: 0}}>epicosity</text>
-        </svg>
+        <img
+          src={logoSrc}
+          alt="Epicosity"
+          style={{ height: '32px', width: 'auto' }}
+          className="transition-transform duration-300"
+        />
+      );
+    };
+
+    // Tagline Component - "Always Create"
+    const Tagline = ({ variant = 'dark' }) => {
+      const taglineSrc = variant === 'dark'
+        ? 'brand-assets/logo-files/AC_Tag_White.png'
+        : 'brand-assets/logo-files/AC_Tag_Black.png';
+
+      return (
+        <img
+          src={taglineSrc}
+          alt="Always Create"
+          style={{ height: '24px', width: 'auto' }}
+          className="transition-opacity duration-300"
+        />
       );
     };
 
@@ -451,7 +467,10 @@
       // Slides array
       const slides = [
         <TitleSlide key={0} isActive={slide === 0}>
-          <Logo variant="dark" />
+          <div className="flex flex-col items-center gap-2">
+            <Logo variant="dark" />
+            <Tagline variant="dark" />
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mt-8 mb-4"><EditableText id="title-main" defaultText="Core Connected Marketing" /></h1>
           <p className="text-lg md:text-xl" style={{color: colors.powder}}><EditableText id="title-sub" defaultText="The Growth Engine for Century Bank's Next Chapter." /></p>
           <p className="mt-10 text-sm" style={{color: colors.ash}}>300 N MAIN AVE. SIOUX FALLS, SD 57104 | 605.275.3742 | EPICOSITY.COM</p>
@@ -782,7 +801,10 @@
           <h2 className="text-4xl md:text-5xl font-bold text-white">Let's build what's next.</h2>
         </TitleSlide>,
         <TitleSlide key={34} bg={colors.ashLight} isActive={slide === 34}>
-          <Logo variant="light" />
+          <div className="flex flex-col items-center gap-2">
+            <Logo variant="light" />
+            <Tagline variant="light" />
+          </div>
           <h2 className="text-5xl md:text-6xl font-bold mt-8 mb-4" style={{color: colors.graphite}}>Thank You.</h2>
           <p className="text-xl md:text-2xl italic" style={{color: colors.darkBlue, fontFamily: 'Georgia, serif'}}>We Champion Growth</p>
           <p className="mt-8 text-sm" style={{color: colors.graphite}}>300 N MAIN AVE. SIOUX FALLS, SD 57104 | 605.275.3742 | EPICOSITY.COM</p>
